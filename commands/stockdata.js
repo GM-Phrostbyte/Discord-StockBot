@@ -47,7 +47,7 @@ class sdCmd {
                 axios.request(stock).then(response => {
                     if (target === 1) {
                         if (response.data.hasOwnProperty([ 'Error Message' ])) {
-                            message.reply('Invalid ticker or time interval. Type !help for assistance.');
+                            message.reply('Invalid ticker. Type !help for assistance.');
                         } else {
                             const metaData = response.data[ 'Meta Data' ];
                             const last = metaData[ '3. Last Refreshed' ];
@@ -75,63 +75,57 @@ class sdCmd {
                                     name: 'Visit Yahoo Finance', 
                                     iconURL: 'https://s.yimg.com/cv/apiv2/myc/finance/Finance_icon_0919_250x252.png', 
                                     url: `https://finance.yahoo.com/quote/${this.entity}/` })
-                                .setDescription(`Last Refresh: ${last.slice(0, -3)}` + ` ${metaData[ '6. Time Zone' ]} Time`)
-                                .setThumbnail('https://i.imgur.com/AfFp7pu.png') //perhaps use image scraping??
-                                .addFields(
-                                    { name: `Most Recent Quote (${this.time} min)`, value: finalStr, inline: true },                                  
-                                    { name: 'Inline field title', value: 'Some value here', inline: true },
-                                    { name: 'Inline field title', value: 'Some value here', inline: false },
-                                    )
-                                    .addField('Inline field title', 'Some value here', true)
-                                    .setImage(image)
-                                    .setTimestamp()
-                                    .setFooter({ text: 'Graphed using quickchart.js', iconURL: 'https://avatars.githubusercontent.com/u/10342521?s=200&v=4' });
-                                    
-                                    message.reply({ embeds: [dataEmbed] })});
-                                }
-                            } else if (target === 2) {
-                                const matches = response.data.bestMatches;
-                                if (matches.length === 0) {
-                                    message.reply('Sorry! No Matches Found. Perhaps check your spelling?');
-                                } else {
-                                    const bestMatch = matches[0];
-                                    let ticker = bestMatch[ '1. symbol' ];
-
-                                    let finalStr = '';
-                                    for (let key in bestMatch) {
-                                        if (bestMatch.hasOwnProperty(key)) {
-                                            if (key != '9. matchScore' && key != '2. name' && key != '3. type' && key != '1. symbol') {
-                                                finalStr += (`${key}` + ` ${bestMatch[key]}\n`);
+                                    .setDescription(`Last Refresh: ${last.slice(0, -3)}` + ` ${metaData[ '6. Time Zone' ]} Time`)
+                                    .setThumbnail('https://i.imgur.com/AfFp7pu.png') // image scrape if legal
+                                    .addFields(
+                                        { name: `Most Recent Quote (${this.time} min)`, value: finalStr, inline: true },)                                  
+                                        .setImage(image)
+                                        .setTimestamp()
+                                        .setFooter({ text: 'Graphed with quickchart.js', iconURL: 'https://avatars.githubusercontent.com/u/10342521?s=200&v=4' });
+                                        
+                                        message.reply({ embeds: [dataEmbed] })});
+                                    }
+                                } else if (target === 2) {
+                                    const matches = response.data.bestMatches;
+                                    if (matches.length === 0) {
+                                        message.reply('Sorry! No Matches Found. Perhaps check your spelling?');
+                                    } else {
+                                        const bestMatch = matches[0];
+                                        let ticker = bestMatch[ '1. symbol' ];
+                                        
+                                        let finalStr = '';
+                                        for (let key in bestMatch) {
+                                            if (bestMatch.hasOwnProperty(key)) {
+                                                if (key != '9. matchScore' && key != '2. name' && key != '3. type' && key != '1. symbol') {
+                                                    finalStr += (`${key}` + ` ${bestMatch[key]}\n`);
+                                                }
                                             }
                                         }
-                                    }
-                                    
-                                    const searchEmbed = new MessageEmbed()
-                                    .setColor('#0099ff')
-                                    .setTitle(`${bestMatch[ '2. name' ]}`)
-                                    .setAuthor({ 
-                                        name: 'Visit Yahoo Finance', 
-                                        iconURL: 'https://s.yimg.com/cv/apiv2/myc/finance/Finance_icon_0919_250x252.png', 
-                                        url: `https://finance.yahoo.com/quote/${ticker}/` })
-                                    .setDescription(`Ticker: ${ticker}` + `    Type: ${bestMatch[ '3. type' ]}`)
-                                    .setThumbnail('https://i.imgur.com/AfFp7pu.png') //perhaps use image scraping??
-                                    .addFields(
-                                        { name: 'Other Information', value: finalStr, inline: true},
-                                        { name: 'Inline field title', value: 'Some value here', inline: false },
-                                        { name: 'Inline field title', value: 'Some value here', inline: true },)
                                         
-                                        .addField('Inline field title', 'Some value here', true)
-                                        .setImage('https://i.imgur.com/AfFp7pu.png')
-                                        .setTimestamp()
-                                        .setFooter({ text: 'Data from Alpha Vantage API', iconURL: 'https://miro.medium.com/max/1024/1*UCZCB7Vx3EJ9FN-pen4BqQ.png' });
-                                        
-                                        message.reply({ embeds: [searchEmbed] });
-                                    }
+                                        const searchEmbed = new MessageEmbed()
+                                        .setColor('#0099ff')
+                                        .setTitle(`${bestMatch[ '2. name' ]}`)
+                                        .setAuthor({ 
+                                            name: 'Visit Yahoo Finance', 
+                                            iconURL: 'https://s.yimg.com/cv/apiv2/myc/finance/Finance_icon_0919_250x252.png', 
+                                            url: `https://finance.yahoo.com/quote/${ticker}/` })
+                                            .setDescription(`Ticker: ${ticker}\nType: ${bestMatch[ '3. type' ]}`)
+                                            .setThumbnail('https://i.imgur.com/AfFp7pu.png') // image scrape if legal
+                                            .addFields(
+                                                { name: 'Other Information', value: finalStr, inline: true},
+                                                { name: '\u200B', value: '\u200B' },
+                                                { name: `Get a quote using the command below:`, 
+                                                value: `!stockdata ${ticker} <time interval>\nType !help for additional usage info`, inline: true},)
+                                                .setTimestamp()
+                                                .setFooter({ text: 'Data from Alpha Vantage API', iconURL: 'https://miro.medium.com/max/1024/1*UCZCB7Vx3EJ9FN-pen4BqQ.png' });
+                                                
+                                                message.reply({ embeds: [searchEmbed] });
+                                            }
+                                        }
+                                    }).catch(error => {
+                                        console.error(error);
+                                    });
                                 }
-                            }).catch(error => {
-                                console.error(error);
-                            });
-                        }
-                    }
-                    
-                    module.exports = sdCmd;
+                            }
+                            
+                            module.exports = sdCmd;

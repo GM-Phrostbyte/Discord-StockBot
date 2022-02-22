@@ -19,7 +19,7 @@ class helpCmd {
                 value: 'Usage: !stockdata <ticker> <time_interval>\nAcceptable Time Intervals (min) :   1, 5, 15, 30, 60'},
                 { name: 'Search for a Company', value: 'Usage: !stockdata search <name>', inline: false },
                 { name: 'NOTE: Usage Cap', 
-                value: '!stockdata limited to 5 times/minute and 500 times/day\nAdditional Note: Includes After-Hours Trading', 
+                value: '!stockdata limited to 5 times/minute and 500 times/day\nAdditional Note: Data includes After-Hours trading', 
                 inline: false },
                 { name: '\u200B', value: '\u200B' },) // spacing for visual enhancement
                 
