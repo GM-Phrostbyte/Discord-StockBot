@@ -10,9 +10,9 @@ class helpCmd {
         .setTitle('StockBot Help Menu')
         .setAuthor({ 
             name: 'Contact Author', 
-            iconURL: 'https://shorturl.at/dfADM', 
+            iconURL: 'https://blog.waalaxy.com/wp-content/uploads/2021/01/LinkedIn-Symbole.png', 
             url: process.env.LINKEDIN })
-            .setDescription("I currently don't do much. Improvements are in progress.")
+            .setDescription("I provide stock quotes and equity data for convenient access on Discord")
             .setThumbnail('https://ih1.redbubble.net/image.1059099685.8962/st,small,845x845-pad,1000x1000,f8f8f8.u1.jpg')
             .addFields(
                 { name: 'Check Stock Data', 
@@ -23,12 +23,12 @@ class helpCmd {
                 inline: false },
                 { name: '\u200B', value: '\u200B' },) // spacing for visual enhancement
                 
-                .addField('Other Commands', 'ping, help', true)
+                .addField('Other Commands', 'help', true)
                 .setTimestamp()
                 .setFooter({ text: 'Made with discord.js', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
                 
-                message.reply({ embeds: [helpEmbed] }); 
-            }
-        }
+        message.reply({ embeds: [helpEmbed] }); 
+    }
+}
         
-        module.exports = helpCmd;
+module.exports = helpCmd;

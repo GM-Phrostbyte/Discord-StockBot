@@ -16,19 +16,19 @@ class chart {
             }
         }
         
-        let change = (datalist[0] - datalist[datalist.length - 1]) * 100 / datalist[0];
+        const change = (datalist[0] - datalist[datalist.length - 1]) * 100 / datalist[0];
         datalist = datalist.reverse();
         labels = labels.reverse();
         
-        let pm = '';
-        let lineColor = 'rgb(155, 155, 155)';
+        let plusOrMinus = '';
+        let lineColor = 'rgb(155, 155, 155)'; // grey
         
         if (change < 0) {
-            pm = '-';
-            lineColor = 'rgb(235, 38, 51)';
+            plusOrMinus = '-';
+            lineColor = 'rgb(235, 38, 51)'; // red
         } else if (change > 0) {
-            pm = '+';
-            lineColor = 'rgb(60, 176, 14)';
+            plusOrMinus = '+';
+            lineColor = 'rgb(60, 176, 14)'; // green
         }
         
         const intraday = new QuickChart();
@@ -37,7 +37,7 @@ class chart {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: `Change: ${pm} ${Math.abs(change.toFixed(2))}%`,
+                    label: `Change: ${plusOrMinus} ${Math.abs(change.toFixed(2))}%`,
                     data: datalist,
                     fill: false,
                     borderColor: `${lineColor}`, 
@@ -66,10 +66,11 @@ class chart {
                             grace: '5%',
                         }
                     }
-                } })
-                const url = await intraday.getShortUrl();
-                return url;
-            }
-        }
+                } 
+            })
+        const url = await intraday.getShortUrl();
+        return url;
+    }
+}
         
-        module.exports = chart;
+module.exports = chart;
